@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rakshetha N | Robotics Portfolio</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg: #030014;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { 
+            margin: 0; background: var(--bg); color: #fff; 
+            font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; 
+        }
+
+        /* Particle Background Fixed */
+        #tsparticles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        /* Navbar */
+        .nav {
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 10%; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(3, 0, 20, 0.6); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+        }
+        .logo { font-family: 'Syncopate'; font-weight: 700; color: var(--primary); letter-spacing: 2px; }
+        .nav-links a { margin-left: 25px; color: #fff; text-decoration: none; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+
+        /* Hero */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-family: 'Syncopate'; font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; text-shadow: 0 0 30px rgba(0, 242, 255, 0.5); }
+        .hero p { font-size: 1.2rem; color: var(--primary); letter-spacing: 8px; text-transform: uppercase; margin-top: 20px; }
+
+        /* Sections */
+        .section { padding: 100px 10%; position: relative; }
+        .section-title { font-family: 'Syncopate'; font-size: 2rem; margin-bottom: 60px; color: var(--primary); border-left: 4px solid var(--secondary); padding-left: 20px; }
+
+        /* Grid & Cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { 
+            background: rgba(255, 255, 255, 0.03); padding: 40px; border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            transition: 0.4s;
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); box-shadow: 0 0 30px rgba(0, 242, 255, 0.2); }
+        .card h3 { color: var(--primary); margin-top: 0; font-family: 'Syncopate'; font-size: 1.1rem; }
+        .card p { color: #adb5bd; line-height: 1.6; }
+
+        /* Contact Section Styles */
+        .contact-wrap {
+            text-align: center; padding: 80px 40px; border-radius: 30px;
+            background: rgba(112, 0, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .status-tag {
+            display: inline-block; padding: 8px 20px; border: 1px solid var(--primary);
+            color: var(--primary); font-family: 'Syncopate'; font-size: 0.7rem;
+            border-radius: 50px; margin-bottom: 20px; box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+        .email-btn {
+            font-size: clamp(1.2rem, 5vw, 2.5rem); color: white; text-decoration: none;
+            font-weight: 700; display: block; margin: 25px 0; transition: 0.3s;
+        }
+        .email-btn:hover { color: var(--primary); text-shadow: 0 0 25px var(--primary); transform: scale(1.05); }
+        .social-row a { margin: 0 15px; color: #94a3b8; text-decoration: none; font-size: 0.9rem; letter-spacing: 2px; transition: 0.3s; }
+        .social-row a:hover { color: white; text-shadow: 0 0 10px white; }
+
+        .footer { text-align: center; padding: 60px; opacity: 0.3; font-size: 0.7rem; letter-spacing: 2px; }
+
+        @media (max-width: 768px) { .nav { padding: 15px 5%; } }
+    </style>
+</head>
+<body>
+    <div id="tsparticles"></div>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { motion } = window.Motion;
+
+        // Initialize Background Animations
+        tsParticles.load("tsparticles", {
+            fpsLimit: 60,
+            particles: {
+                color: { value: "#00f2ff" },
+                links: { color: "#00f2ff", distance: 150, enable: true, opacity: 0.2, width: 1 },
+                move: { enable: true, speed: 1.2 },
+                number: { density: { enable: true, area: 800 }, value: 70 },
+                opacity: { value: 0.4 },
+                size: { value: { min: 1, max: 3 } }
+            },
+            interactivity: {
+                events: { onHover: { enable: true, mode: "grab" } },
+                modes: { grab: { distance: 200, links: { opacity: 0.5 } } }
+            }
+        });
+
+        function App() {
+            return (
+                <div>
+                    <nav className="nav">
+                        <div className="logo">RAKSHETHA N</div>
+                        <div className="nav-links">
+                            <a href="#about">Bio</a>
+                            <a href="#skills">Skills</a>
+                            <a href="#projects">Work</a>
+                            <a href="#contact">Contact</a>
+                        </div>
+                    </nav>
+
+                    {/* Hero Section */}
+                    <section className="hero">
+                        <motion.h1 
+                            initial={{ opacity: 0, y: 30 }} 
+                            animate={{ opacity: 1, y: 0 }} 
+                            transition={{ duration: 1 }}
+                        >
+                            RAKSHETHA N
+                        </motion.h1>
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            Robotics & ECE Engineer
+                        </motion.p>
+                    </section>
+
+                    {/* About Section */}
+                    <section id="about" className="section">
+                        <motion.div initial={{opacity:0}} whileInView={{opacity:1}} transition={{duration:1}}>
+                            <h2 className="section-title">// ABOUT</h2>
+                            <p style={{fontSize: '1.4rem', maxWidth: '850px', lineHeight: '1.7'}}>
+                                I am an Electronics and Communication Engineering student working on 
+                                <b> embedded systems, robotics, drones, and biomedical projects</b>. 
+                                I enjoy building real-world systems combining hardware and software.
+                            </p>
+                        </motion.div>
+                    </section>
+
+                    {/* Skills Section */}
+                    <section id="skills" className="section">
+                        <h2 className="section-title">// SKILLS</h2>
+                        <div className="grid">
+                            <div className="card"><h3>Embedded Systems</h3><p>Arduino, ESP32, STM32</p></div>
+                            <div className="card"><h3>Programming</h3><p>C, C++, Python, JavaScript</p></div>
+                            <div className="card"><h3>Sensors</h3><p>IMU, EMG, ECG, Ultrasonic, Radar</p></div>
+                            <div className="card"><h3>Tools</h3><p>Wokwi, Git, MATLAB, ROS</p></div>
+                        </div>
+                    </section>
+
+                    {/* Projects Section */}
+                    <section id="projects" className="section">
+                        <h2 className="section-title">// PROJECTS</h2>
+                        <div className="grid">
+                            <div className="card"><h3>Bionic Arm</h3><p>EMG-based bionic arm with finger, wrist, and elbow control using ESP32.</p></div>
+                            <div className="card"><h3>Smartpicker LABOT</h3><p>Autonomous lab assistant robot with MQTT communication and SD logging.</p></div>
+                            <div className="card"><h3>Vehicle Safety System</h3><p>Radar and ultrasonic based collision detection system.</p></div>
+                            <div className="card"><h3>Agricultural Drone</h3><p>Precision agriculture drone with RTK, spraying and obstacle avoidance.</p></div>
+                        </div>
+                    </section>
+
+                    {/* --- CONTACT SECTION --- */}
+                    <section id="contact" className="section">
+                        <motion.div 
+                            className="contact-wrap"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            whileInView={{ scale: 1, opacity: 1 }}
+                            viewport={{ once: true }}
+                        >
+                            <div className="status-tag">SYSTEM STATUS: READY</div>
+                            <h2 style={{fontFamily: 'Syncopate', margin: 0, fontSize: '1.8rem'}}>INITIATE CONNECTION</h2>
+                            
+                            <a href="mailto:rakshetha@example.com" className="email-btn">
+                                RAKSHETHA@EXAMPLE.COM
+                            </a>
+
+                            <div className="social-row">
+                                <a href="#">LINKEDIN</a>
+                                <a href="#">GITHUB</a>
+                                <a href="#">WOKWI</a>
+                            </div>
+                        </motion.div>
+                    </section>
+
+                    <footer className="footer">
+                        SIGNAL ENCRYPTED | © 2026 RAKSHETHA N
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
